@@ -33,8 +33,12 @@ const manual = [];
 console.log(`\n${C.b}Machine Wealth → ${target}${C.x}${DRY ? `  ${C.y}(simulation)${C.x}` : ""}\n`);
 const must = ["agent-os/server.js", "agent-os/public/index.html", "agent-os/public/js/core.js", "agent-os/public/js/pages/machines.js", "remotion/src/Root.tsx"];
 for (const rel of must) if (!fs.existsSync(path.join(target, rel))) die(`« ${rel} » introuvable : ${target} n'a pas l'air d'être une racine d'Agent OS (le dossier qui contient agent-os/ et remotion/).`);
-for (const rel of ["agent-os/lib/store.js", "agent-os/lib/fal.js", "agent-os/lib/ffmpeg.js", "agent-os/lib/bank.js", "agent-os/lib/llm.js", "agent-os/lib/google.js"]) {
-  if (!fs.existsSync(path.join(target, rel))) warn(`socle manquant : ${rel} — la machine ne démarrera pas sans lui`);
+// Modules du socle dont la machine et le Labo ont besoin (ils ne sont PAS fournis par ce dépôt).
+const SOCLE = ["store", "claude", "llm", "vault", "google", "tasks", "spend", "bank", "scrap", "fal", "ffmpeg", "youtube", "apify"];
+const socleManquant = SOCLE.filter((m) => !fs.existsSync(path.join(target, "agent-os/lib", m + ".js")));
+if (socleManquant.length) {
+  warn(`socle incomplet : ${socleManquant.map((m) => "lib/" + m + ".js").join(", ")}`);
+  warn("la machine ne démarrera pas sans ces modules — ce sont ceux d'un Agent OS standard, ce dépôt ne les duplique pas");
 }
 
 function read(rel) { return fs.readFileSync(path.join(target, rel), "utf8"); }

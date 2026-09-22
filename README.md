@@ -111,6 +111,8 @@ install.js                                   l'installateur
 
 La machine s'appuie sur le socle d'Agent OS, qui n'est pas dupliqué ici : `store`, `claude`, `llm`, `vault`, `google`, `tasks`, `spend`, `bank`, `scrap`, `fal`, `ffmpeg`, `youtube`, `apify`.
 
+L'installateur vérifie leur présence et le dit clairement s'il en manque un. Rien d'autre n'est nécessaire : la machine n'ajoute **aucune dépendance npm**.
+
 ## Services utilisés
 
 | Service | Rôle |
