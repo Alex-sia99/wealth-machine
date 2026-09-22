@@ -75,9 +75,9 @@ node scripts/niche-lab.js --niche "Wealth" --digest      # les mesures agrégée
 
 Pour chaque chaîne : la liste complète des vidéos via l'API Data YouTube, puis les plus vues téléchargées en 480p, découpées en plans par FFmpeg, et **analysées image par image** (une image toutes les 2 secondes) par un modèle multimodal qui rend, plan par plan, la nature du visuel, le mouvement de caméra, le texte à l'écran et la requête de banque d'images équivalente. Une synthèse narrative (hook, structure, CTA, rétention) est produite par vidéo.
 
-**Coût : environ 0,02 $ par vidéo de 20 minutes.** Les résultats alimentent la Banque de Niches d'Agent OS sans rien changer à son code.
+**Coût : environ 0,02 $ par vidéo de 20 minutes** — la banque livrée ici (13 chaînes, 48 vidéos décortiquées, 9 744 plans) a coûté 0,92 $ pour 3 h 32 de traitement. Les résultats alimentent la Banque de Niches d'Agent OS sans rien changer à son code.
 
-C'est ainsi qu'a été écrite la recette livrée ici : [`agent-os/docs/RECETTE-NICHE-WEALTH.md`](files/agent-os/docs/RECETTE-NICHE-WEALTH.md) — 35 vidéos décortiquées, 370 titres, chiffres mesurés (durée, débit, rythme des plans, parts de stock et de motion, taux de texte incrusté, mouvements de caméra) et codes narratifs et visuels relevés.
+C'est ainsi qu'a été écrite la recette livrée ici : [`agent-os/docs/RECETTE-NICHE-WEALTH.md`](files/agent-os/docs/RECETTE-NICHE-WEALTH.md) — 42 vidéos décortiquées, 370 titres, chiffres mesurés (durée, débit, rythme des plans, parts de stock et de motion, taux de texte incrusté, mouvements de caméra) et codes narratifs et visuels relevés.
 
 ---
 

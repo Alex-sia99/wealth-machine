@@ -2,8 +2,6 @@
 
 Source : les **13 chaînes** fournies par Alex (Jenni Peterson, Sinking Fortunes, Mansion Meltdown, Wealth vs Nature, Trophy Liability, Global Weather Network, Luxury Edge, babyporcelana0979, jktim, Simon Uncovered, Simon Hammer, China Under Stress, Fault Line), scannées **en entier** par le Labo de niche (`scripts/niche-lab.js`, API Data YouTube : ~370 vidéos listées avec vues, durée, tags, description) et **4 vidéos par chaîne décortiquées image par image** (les 3 plus vues + la plus récente : téléchargement 480p, coupes FFmpeg, 1 image / 2 s, Qwen 3.7 Flash plan par plan, synthèse narrative Qwen 3.7 Plus). Données : `data/lab/`, miroir dans la Banque de Niches « Wealth » (`nmuchytyw`). Agrégat : `node scripts/niche-lab.js --niche Wealth --digest` ou encart 🔬 de la Banque.
 
-> Section 2 (chiffres) : mesures consolidées à la fin du scan — voir le tableau « état du scan » en bas.
-
 ## 1. Le format en une phrase
 
 Une **enquête « faceless » de 15-25 min** sur une fortune immobilière identifiable (mansions d'un lieu précis, prix en millions) que **la nature ou un mécanisme humain rend invendable** (érosion, glissement, inondation, feu, sol artificiel, assurance qui se retire, loi qui interdit le mur). Voix off journalistique et froide, **b-roll de stock en alternance stricte opulence / destruction**, **chiffres chocs et aphorismes incrustés en gros sur l'image** (le code n°1), coupures de presse locales, cartes de section sobres, CTA à 1 min, conclusion fataliste avec une question. **Aucun avatar chez les concurrents** : le présentateur IA en lipsync est le différenciateur de notre machine.
@@ -15,14 +13,14 @@ Trois sous-familles dans la banque, même grammaire :
 
 ## 2. Chiffres qui pilotent la machine (mesurés)
 
-| Mesure | Valeur (**35 vidéos décortiquées**, 370 titres) | Réglage machine |
+| Mesure | Valeur (**42 vidéos décortiquées**, 370 titres) | Réglage machine |
 |---|---|---|
-| Durée | 15-24 min, **médiane 19,3 min** (1 upload/jour, 9 à 121 vidéos par chaîne) | `durationMin` 20 (démo : 5) |
+| Durée | 15-24 min, **médiane 19,2 min** (1 upload/jour, 9 à 121 vidéos par chaîne) | `durationMin` 20 (démo : 5) |
 | Débit | **~172 mots/min** (sous-titres auto). Inworld lit à ~137 : le script est dimensionné sur le débit **réel** du TTS | `measuredWpm` (auto-mesuré), `wpm` 170 pour repère |
 | Rythme visuel | **10,8 plans/min**, médiane **5 s** | `shotSeconds` 4,5 |
-| Nature des plans | **stock vidéo 68 %**, photo 8 %, **texte plein écran 12 %**, graphique 5 %, capture d'écran 2 %, IA 4 % | `mixBroll` 80, `motionPct` 15 |
-| Texte incrusté | **52 % des plans** portent un texte (chiffre, aphorisme, lieu, titre presse) | `overlayPct` 55, `lowerThirds` on |
-| Caméra | fixe 57 %, pan droite 14 %, zoom in 13 %, zoom out 10 %, tilt/dolly 3 %, pan gauche 1 % | zoom/pan alternés, amplitude 10 % |
+| Nature des plans | **stock vidéo 67 %**, photo 8 %, **texte plein écran 12 %**, graphique 5 %, capture d'écran 2 %, IA 5 % | `mixBroll` 80, `motionPct` 15 |
+| Texte incrusté | **53 % des plans** portent un texte (chiffre, aphorisme, lieu, titre presse) | `overlayPct` 55, `lowerThirds` on |
+| Caméra | fixe 58 %, pan droite 13 %, zoom in 13 %, zoom out 9 %, tilt/dolly 3 %, pan gauche 1 % | zoom/pan alternés, amplitude 10 % |
 | Avatar | **1,4 %** (et ce sont des interviewés dans des extraits de JT, pas un présentateur) | hook ≤ 10 s + 2-3 passages de 10 s + CTA |
 | Hook | 12-18 s, formule « walk-in » (voir §3) | outline `hook.verbatim` |
 | CTA | **1 seul, à 1:00-1:30** (après le hook, avant l'enquête), 10-20 s | `ctaAfterSection` 1 |
@@ -49,7 +47,7 @@ Trois sous-familles dans la banque, même grammaire :
 - Requêtes stock types : aerial mansion coastline, luxury house cliff, waves crashing seawall, beach erosion aerial, flooded street luxury cars, storm surge houses, construction crane coast, insurance documents desk, drone island estates, collapsed deck beach.
 
 ### 4.2 Le texte incrusté (le code n°1)
-- Sur ~46 % des plans. **Sans-serif grasse** (Montserrat Black / Impact), blanc ou jaune, rouge pour l'alerte, sur bande sombre ou image assombrie. Animations sobres : fade, slide-up, typewriter, compteur.
+- Sur **53 % des plans**. **Sans-serif grasse** (Montserrat Black / Impact), blanc ou jaune, rouge pour l'alerte, sur bande sombre ou image assombrie. Animations sobres : fade, slide-up, typewriter, compteur.
 - Trois familles : **kicker** = chiffre choc ou aphorisme en capitales (« $8 K / WEEK », « 32 TOTAL COLLAPSES SINCE 2020 », « 0% HAD LAND MOVEMENT INSURANCE », « THE ISLAND MIGRATES, THE HOUSES DO NOT ») ; **bandeau** = lieu/date/nom (« MARGUERITE DRIVE », « CAPE HATTERAS », « 1977 THE HARD CUTOFF DATE ») ; **titre presse** = manchette en capitales avec source (« OCEANFRONT HOMES RED-TAGGED AFTER STORM DAMAGE — CBS LOS ANGELES »).
 - Cartes plein écran rares (5 %) : titre de section (« THE LAGUNA PROBLEM », « THE ZERO-SUM GAME ») ou liste de vulnérabilités (« RAIN FROM ABOVE / TIDE FROM THE SIDE / GROUNDWATER FROM BELOW ») ; petits graphiques (largeur de plage −50 %, odds El Niño 90 %).
 
@@ -98,6 +96,14 @@ Plans **fixes majoritaires** (« pour laisser le texte respirer »), **pan droit
 
 La troisième est la référence : toutes les briques y sont à l'image (avatar en décor de bureau ≤ 10 s, cartes de section, chiffres animés, aphorismes et bandeaux incrustés, bouton d'abonnement, musique, miniature au code concurrent).
 
-## 8. État du scan
+## 8. État du scan — TERMINÉ
 
-Vidéos décortiquées : 35/52 au moment de l'écriture (scan en cours). Les chiffres du §2 se recalent automatiquement dans l'encart 🔬 de la Banque de Niches et via `node scripts/niche-lab.js --niche Wealth --digest`.
+Scan complet le 22 septembre 2026 : **13 chaînes**, 370 vidéos listées, **48 vidéos téléchargées et décortiquées image par image** (42 avec synthèse narrative complète), **9 744 plans analysés**, 146 000 mots de transcript. Durée : 3 h 32. **Coût total : 0,92 $.**
+
+Les chiffres du §2 sont l'agrégat de ce scan. Pour les recalculer après un ajout de chaîne :
+
+```bash
+node scripts/niche-lab.js --niche "Wealth" --digest
+```
+
+Ils s'affichent aussi dans l'encart 🔬 de la Banque de Niches (page Banque → niche Wealth).
