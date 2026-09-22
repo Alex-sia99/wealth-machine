@@ -1,0 +1,4 @@
+node_modules/
+*.bak-wealth
+.DS_Store
+Thumbs.db

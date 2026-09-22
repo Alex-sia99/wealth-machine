@@ -1,0 +1,64 @@
+{
+  "id": "wealth",
+  "name": "Wealth",
+  "description": "Vidéos « faceless » de la niche richesse/patrimoine (mansions, fortunes, luxe face aux catastrophes et aux erreurs) — outline + sections Claude → Inworld/ElevenLabs par section + Whisper → plan visuel (cartes, avatar, plans) → direction visuelle par plan (b-roll Pexels / rendu IA Kie / motion design Remotion) → assets en parallèle (Pexels, Kie, Remotion, lipsync FAL de l'avatar, Suno) → FFmpeg (zoom/dézoom/pan, bandeaux, CTA, musique, sous-titres) → packaging.",
+  "files": [
+    "agent-os/lib/machines/wealth.js",
+    "agent-os/public/js/pages/wealth.js",
+    "agent-os/lib/machines/wealth.export.json",
+    "agent-os/lib/pexels.js",
+    "agent-os/lib/lab.js",
+    "agent-os/scripts/niche-lab.js",
+    "agent-os/scripts/check-wealth-run.js",
+    "agent-os/docs/RECETTE-NICHE-WEALTH.md",
+    "remotion/src/WealthMotion.tsx",
+    "remotion/src/WealthThumb.tsx",
+    "remotion/src/LinguistiqueCta.tsx"
+  ],
+  "serverSnippet": {
+    "file": "agent-os/server.js",
+    "start": "    // ===== MACHINE WEALTH =====",
+    "end": "    // ===== FIN MACHINE WEALTH ====="
+  },
+  "requires": [
+    "Un clone d'Agent OS avec le socle en place (modules NON inclus dans l'export) : `lib/store.js`, `lib/claude.js` (Claude CLI connecté), `lib/vault.js`, `lib/google.js` (Drive + YouTube), `lib/tasks.js`, `lib/spend.js`, `lib/bank.js`, `lib/scrap.js`, `lib/fal.js`, `lib/ffmpeg.js`, `lib/llm.js`, `lib/youtube.js`, `lib/apify.js`.",
+    "FFmpeg 6+ dans le PATH (zoompan, tpad, subtitles, concat, amix). Police « Arial Black » (Windows) pour les sous-titres — remplacer `FontName=` sinon.",
+    "yt-dlp dans le PATH (Labo de niche uniquement : sous-titres + téléchargement 480p ; client « android » forcé — le client web renvoie 403 sur les flux média).",
+    "Le projet Remotion voisin (`remotion/`) : compos `WealthMotion` (cartes intro/titre/dossier/comparatif/chiffre/liste/citation en MP4 ; kickers, bandeaux et titres de presse en séquence PNG transparente), `WealthThumb` (miniature : bandeau BREAKING composé sur l'image de fond, rendue par `remotion still`) et `CtaTopRight` (bouton s'abonner). Vérifier `npx remotion compositions` après l'ajout dans `remotion/src/Root.tsx`.",
+    "Coffre : `kie` (images IA, Suno), `fal` (Inworld / ElevenLabs, Whisper, lipsync), `pexels` (b-roll), `openrouter` (Labo de niche : Qwen 3.7 Flash/Plus), 1 clé YouTube Data (Labo : liste des vidéos) et Google Drive connecté (URLs publiques pour FAL)."
+  ],
+  "tools": [
+    "Claude CLI — outline, sections, direction visuelle par plan, packaging, fiche d'avatar, idées.",
+    "FAL : `fal-ai/inworld-tts` (voix, 0,015 $/1k car.) ou `fal-ai/elevenlabs/text-to-dialogue/eleven-v3` (0,10 $/1k car.) ; `fal-ai/whisper` (mots horodatés) ; `veed/lipsync` (avatar, 0,40 $/min).",
+    "Pexels API — vidéos (mp4 ≤ 1920, fps 23-60) et photos paysage ; 1 requête par plan b-roll, 200/h.",
+    "Kie.ai — `nano-banana-2-lite` (défaut) / Seedream / GPT Image 2 / Grok 2 pour les rendus IA, la référence de l'avatar et la miniature ; Suno V5_5 pour la musique de fond (0,06 $, 2 titres).",
+    "Remotion 4 (`WealthMotion`, `CtaTopRight`) — motion design rendu en UNE passe par run puis découpé par FFmpeg.",
+    "FFmpeg — clips normalisés 1920×1080 30 fps (zoompan pour le zoom/dézoom/pan sur vidéo ET image), concat, overlays PNG (bandeaux, CTA), amix (musique), subtitles."
+  ],
+  "pipeline": [
+    "1. Script : outline (titre, hook verbatim, N sections avec beat/faits/chiffre-clé/avatar, idée de miniature) puis sections écrites en parallèle (5), CTA canonique de la niche.",
+    "2. Voix : TTS par section + CTA → concat vo.mp3 → Whisper mot-à-mot → découpage sur le sens (cible 4 s) → plan visuel : carte de titre (3 s) par section, passages avatar (hook, CTA, sections marquées, ~12 s), plans.",
+    "3. Plans : Claude décide pour chaque plan b-roll / IA / motion (+ 3 requêtes Pexels, description EN, caméra, bandeau optionnel) ; la machine rebalance selon la parité b-roll/IA et le % motion réglés.",
+    "4. Assets (tout en parallèle) : Pexels (score durée/résolution, dédoublonnage, repli photo puis IA), Kie (prompts adaptés en cas de refus), Remotion (cartes en une passe), lipsync FAL (tranche audio exacte → clip image → lipsync → normalisation muette), Suno.",
+    "5. Montage : un clip normalisé par plan (zoompan zoom+/zoom−/pan←/pan→ alternés, boucle si b-roll court), concat, garde de durée vs voix, piste audio voix + musique, overlays bandeaux (start_number sur la séquence PNG) + bouton CTA, sous-titres optionnels, final.mp4.",
+    "6. Packaging : titre à la formule de la niche, description codée, tags, puis miniature en deux temps — image de fond i2i ancrée sur les miniatures concurrentes DU MÊME FORMAT (vue drone d'une propriété en péril, sans aucun texte) puis bandeau « BREAKING + LIEU / GROS TITRE » composé par Remotion → stock → publication YouTube optionnelle."
+  ],
+  "creation": [
+    "Banque de niche « Wealth » constituée par le Labo de niche (`scripts/niche-lab.js`) : 13 chaînes scannées en entier (API Data), 4 vidéos par chaîne téléchargées en 480p, coupes FFmpeg, une image toutes les 2 s analysée par paquets par Qwen 3.7 Flash (nature du plan, mouvement de caméra, texte, requête stock), synthèse narrative Qwen 3.7 Plus.",
+    "Recette dérivée de cette data (docs/RECETTE-NICHE-WEALTH.md) et encodée en RÉGLAGES (wpm, durée des plans, parts b-roll/IA/motion/avatar, CTA) : recalable sans toucher au code.",
+    "Squelette cloné de pov.js (skill machine-factory), coutures remplacées : avatar (onglet personnage), recette, plan visuel, assets multi-sources, montage à effets."
+  ],
+  "install": [
+    "Copier les fichiers du dossier `files/` aux mêmes chemins dans le projet cible.",
+    "Dans `server.js` : `const wealth = require(\"./lib/machines/wealth\");` et `const lab = require(\"./lib/lab\");` ; ajouter `wealth` à `MACHINES` ; ajouter `card(wealth)` dans `GET /api/machines` ; ajouter `wealth` aux regex génériques stock/order-info/ideas ; coller `server-routes.snippet.js` avant le bloc de la machine Musique ; ajouter `wealth.sweepRuns()` et `wealth.strandedRuns()` au boot.",
+    "Frontend : `<script src=\"js/pages/wealth.js\">` dans `public/index.html` ; `\"wealth\"` dans le tableau de `core.js` qui redirige le surlignage nav vers « machines » ; carte hub dans `public/js/pages/machines.js` (href `#/wealth`, badge `avatars`).",
+    "Remotion : `import { WealthMotion, wealthMotionSchema, wealthMotionFrames, DEFAULT_THEME, FPS } from \"./WealthMotion\"` + la `<Composition id=\"WealthMotion\">` (calculateMetadata = somme des cartes) dans `remotion/src/Root.tsx` ; vérifier `npx remotion compositions`.",
+    "Coffre : renseigner `pexels`, `fal`, `kie`, `openrouter` ; connecter Google Drive ; ajouter une clé YouTube Data pour le Labo.",
+    "Onglet Avatars : créer au moins un avatar avec image de référence 16:9 (✨ fiche Claude → 🎨 référence Kie), puis lancer un run."
+  ],
+  "runtimeData": [
+    "data/machines/wealth.json (réglages + avatars), data/machines/wealth-stock.json, data/machines/runs/wealth/<id>.json",
+    "output/machines/<runId>/ (vo.mp3, assets/, final.mp4, thumbnail.png), output/machines/wealth-avatars/ (références)",
+    "data/lab/ (scan des chaînes + analyses image par image), output/lab/<chaîne>/<videoId>/ (images extraites), data/scrap/* et data/bank/niches.json (miroir pour la Banque de Niches)"
+  ]
+}
